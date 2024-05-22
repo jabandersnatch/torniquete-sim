@@ -1,0 +1,13 @@
+# Add the data folder to the ignore list
+data
+
+# Python 3.12 ignore files
+
+*.pyc
+__pycache__
+.pytest_cache
+.idea
+.vscode
+.DS_Store
+*.egg-info
+*.egg

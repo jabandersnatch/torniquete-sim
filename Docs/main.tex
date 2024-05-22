@@ -1,0 +1,198 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{lipsum}
+\usepackage[spanish]{babel}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{Introducción a la Simulación con SimPy}
+\fancyfoot[C]{\thepage}
+
+% Section Formatting
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\title{Introducción a la Simulación con SimPy}
+\author{\textbf{Instructores:} \\
+Carlos Andrés Lozano, \\
+Germán Adolfo Montoya, \\
+Juan Andrés Mendez}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+El objetivo de este taller es introducir los conceptos y aplicaciones prácticas de la simulación utilizando SimPy. Los estudiantes aprenderán a modelar y analizar el comportamiento de un sistema de entradas con torniquetes en el edificio Santo Domingo (SD) durante un semestre, explorar el impacto de diferentes escenarios y optimizar el rendimiento del sistema.
+\end{abstract}
+
+\section*{Objetivo}
+El objetivo de este taller es introducir los conceptos y aplicaciones prácticas de la simulación utilizando SimPy, centrándose en el modelado y optimización de un sistema de entradas con torniquetes en el edificio Santo Domingo (SD) durante un semestre.
+
+
+\section*{Definición del problema}
+
+La Universidad de los Andes ha mantenido un número constante de estudiantes durante los últimos 7 años. Sin embargo, debido a la adición de nuevos edificios y diversas tendencias en el país, la Dirección de Planeación de la universidad estima que para el año 2025 la población estudiantil crecerá en un 28\%. Esto ha generado preocupación entre algunos miembros sobre si nuestra infraestructura actual puede manejar tal incremento de estudiantes. En particular, hay inquietudes respecto al sistema de torniquetes.
+
+Para abordar estas inquietudes, la administración decidió acercarse a los estudiantes de ingeniería de sistemas que están cursando \textbf{MOS}. Se les proporcionó acceso a un conjunto de datos de un semestre pasado que contiene todas las entradas y salidas del edificio Santo Domingo (SD), con el propósito de realizar una prueba de concepto sobre cómo se podría implementar la simulación de un solo edificio antes de simular toda la universidad.
+
+En el caso del edificio SD, se cuenta con 6 torniquetes ajustados a una única dirección (3 para entrar y 3 para salir). Los datos muestran el flujo semanal (de lunes a sábado) de estudiantes, profesores y personal administrativo que entran y salen del edificio. El objetivo de este estudio es diseñar con gran fidelidad y detalle el comportamiento de la entrada y salida de personas en este edificio.
+
+Para ello, se consideran las siguientes especificaciones: el tiempo para pasar por un torniquete es de 5 segundos, el tiempo necesario para tener el carnet en mano y estar listo para entrar es de unos 10 segundos, y el tiempo de lectura de QR, que es significativamente más alto, es de 20 segundos. Además, hay 2 torniquetes que funcionan con QR (uno de entrada y otro de salida). Es importante notar que estos tiempos tienen un comportamiento aleatorio, es decir, nunca se demoran exactamente 5, 10 o 20 segundos, sino que varían dentro de un rango de ±2 segundos de manera aleatoria.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Actividad} & \textbf{Tiempo (segundos)} \\ \hline
+        Pasar por el torniquete & 5 ± 2 \\ \hline
+        Preparar el carnet para entrar & 10 ± 2 \\ \hline
+        Lectura de QR & 20 ± 2 \\ \hline
+    \end{tabular}
+    \caption{Tiempos necesarios para pasar por el torniquete}
+    \label{tab:times}
+\end{table}
+
+\section*{Tareas}
+
+\subsection*{1. Análisis de Datos}
+\textbf{Objetivo:} Entender el comportamiento de las entradas y salidas a lo largo de la semana.
+
+\textbf{Descripción:}
+\begin{itemize}
+    \item \textbf{Cargar y Limpiar el Conjunto de Datos:} Utilizar librerías de Python como Pandas para cargar y limpiar el conjunto de datos. Asegurarse de manejar datos faltantes y valores atípicos adecuadamente.
+    \item \textbf{Visualizar los Datos:} Crear visualizaciones utilizando librerías como Matplotlib o Seaborn para identificar patrones y horas pico en las entradas y salidas del edificio.
+    \item \textbf{Calcular Estadísticas Clave:} Determinar estadísticas clave como la tasa promedio de entradas y salidas por hora, día de la semana y categorías de usuarios (estudiantes, profesores, personal administrativo).
+    \item \textbf{Ajuste de Curvas (Curve Fitting):} Aplicar técnicas de ajuste de curvas para modelar patrones de entrada y salida. Utilizar modelos como regresión lineal, polinomial o suavizado exponencial para ajustar los datos y predecir tendencias.
+    \item \textbf{Análisis de Temporadas y Tendencias:} Identificar y analizar patrones estacionales o tendencias a largo plazo en los datos.
+\end{itemize}
+\textbf{Entrega:}
+\begin{itemize}
+    \item \textbf{Procesamiento de Datos:} Describa el proceso de carga y limpieza de datos, incluyendo cualquier problema encontrado y cómo se resolvieron (por ejemplo, manejo de datos faltantes y valores atípicos).
+    \item \textbf{Visualizaciones:} Gráficos y visualizaciones que muestren claramente los patrones y horas pico de entradas y salidas. Las visualizaciones deben incluir gráficos de series temporales, histogramas y gráficos de dispersión.
+    \item \textbf{Estadísticas Clave:} Un resumen de las estadísticas clave calculadas, como las tasas promedio de entradas y salidas, desglosadas por hora, día de la semana y categoría de usuario.
+    \item \textbf{Modelo de Ajuste de Curvas:} Un modelo de ajuste de curvas aplicado a los datos, con una descripción de la metodología utilizada (por ejemplo, regresión lineal, polinomial o suavizado exponencial) y los resultados obtenidos.
+    \item \textbf{Análisis de Temporadas y Tendencias:} Un análisis de las tendencias y patrones estacionales identificados, junto con cualquier recomendación basada en estos hallazgos.
+\end{itemize}
+
+\subsection*{2. Diseño y Justificación del Modelo}
+\textbf{Objetivo:} Diseñar y justificar un modelo de simulación para el sistema de torniquetes del edificio Santo Domingo (SD).
+
+\textbf{Descripción:}
+\begin{itemize}
+    \item \textbf{Definir Componentes y Flujo de Proceso:}
+    \begin{itemize}
+        \item \textbf{Componentes del Sistema:} Identificar y describir los componentes clave del sistema de torniquetes, incluyendo los torniquetes, los lectores de QR, las tarjetas de identificación y el flujo de personas (estudiantes, profesores y personal administrativo).
+        \item \textbf{Flujo de Proceso:} Describir el flujo de proceso completo desde la llegada de una persona al torniquete hasta su entrada o salida del edificio. Detallar las etapas del proceso, como la preparación de la tarjeta, el escaneo de QR y el paso a través del torniquete.
+    \end{itemize}
+    
+    \item \textbf{Tipos de Torniquetes:}
+    \begin{itemize}
+        \item \textbf{Torniquetes Convencionales:} Describir los torniquetes convencionales y su tiempo de procesamiento (5 segundos ± 2 segundos).
+        \item \textbf{Torniquetes con Lector de QR:} Describir los torniquetes equipados con lectores de QR y su tiempo de procesamiento (20 segundos ± 2 segundos).
+        \item \textbf{Dirección de Flujo:} Detallar la configuración actual de los torniquetes, con 3 torniquetes dedicados a la entrada y 3 a la salida, y la inclusión de 1 torniquete de entrada y 1 de salida con lectores de QR.
+    \end{itemize}
+    
+    \item \textbf{Justificar Decisiones de Diseño:}
+    \begin{itemize}
+        \item \textbf{Basado en el Análisis de Datos:} Justificar las decisiones de diseño utilizando los resultados del análisis de datos de la sección anterior. Explicar cómo los patrones de entrada y salida, las horas pico y las tasas de uso influyen en el diseño del modelo.
+        \item \textbf{Variabilidad y Aleatoriedad:} Incluir la variabilidad en los tiempos de procesamiento para reflejar condiciones más realistas, tal como se indicó en la definición del problema.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Entrega:}
+\begin{itemize}
+    \item \textbf{Documento de Diseño del Modelo:} Un documento detallado que incluya:
+    \begin{itemize}
+        \item Diagramas que muestren los componentes del sistema y el flujo de proceso.
+        \item Descripciones de los diferentes tipos de torniquetes y sus tiempos de procesamiento.
+        \item Justificaciones claras y bien fundamentadas para las decisiones de diseño, basadas en el análisis de datos y las proyecciones de incremento en la población estudiantil.
+    \end{itemize}
+\end{itemize}
+
+
+\subsection*{3. Creación de la Simulación}
+\textbf{Objetivo:} Implementar el modelo de simulación utilizando SimPy.
+
+\textbf{Descripción:}
+\begin{itemize}
+    \item \textbf{Codificar el Proceso Básico del Torniquete:}
+    \begin{itemize}
+        \item Desarrollar el código en Python utilizando la biblioteca SimPy para modelar el proceso básico de los torniquetes.
+        \item Asegurarse de que el código capture todos los componentes y flujos de proceso descritos en el modelo de diseño, incluyendo la llegada de personas, la preparación del carnet y el paso por el torniquete.
+    \end{itemize}
+    
+    \item \textbf{Integrar Variabilidad:}
+    \begin{itemize}
+        \item Incorporar variabilidad en los tiempos de procesamiento para reflejar condiciones realistas. Implementar distribuciones de tiempo aleatorio para cada actividad (p. ej., pasar por el torniquete, preparar el carnet y leer el QR) utilizando distribuciones normales con los parámetros especificados (media y desviación estándar).
+    \end{itemize}
+    
+    \item \textbf{Asegurar la Precisión:}
+    \begin{itemize}
+        \item Validar el modelo simulando situaciones conocidas y comparando los resultados con los datos reales del edificio Santo Domingo.
+        \item Revisar y refinar el código para garantizar que la simulación refleje con precisión el comportamiento real del sistema.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Entrega:}
+\begin{itemize}
+    \item \textbf{Modelo de Simulación Funcional:} Un modelo de simulación funcional en SimPy que incluye:
+    \begin{itemize}
+        \item Código fuente bien comentado que describe cada parte del proceso de simulación.
+        \item Scripts de prueba que validen la precisión del modelo en comparación con los datos reales.
+    \end{itemize}
+    \item \textbf{Documentación del Código:} Un documento que describa el diseño del código, las decisiones tomadas durante la implementación y cómo se integra la variabilidad.
+\end{itemize}
+
+\subsection*{4. Análisis de Escenarios y Optimización}
+\textbf{Objetivo:} Explorar y optimizar el sistema bajo varios escenarios.
+
+\textbf{Descripción:}
+\begin{itemize}
+    \item \textbf{Escenario 1: Simulación de un Gran Evento:}
+    \begin{itemize}
+        \item Simular un evento especial con un aumento significativo en las tasas de entrada.
+        \item Analizar el impacto de este aumento en los tiempos de espera y la capacidad del sistema.
+        \item Determinar cuántos torniquetes adicionales se necesitarían para asegurar que el tiempo de espera por invitado no sobrepase los 5 minutos.
+    \end{itemize}
+    
+    \item \textbf{Escenario 2: Mejora de Velocidad del Lector de QR:}
+    \begin{itemize}
+        \item Evaluar el impacto de aumentar la velocidad de los lectores de QR.
+        \item Simular diferentes velocidades de procesamiento para los lectores de QR y analizar su efecto en el tiempo total de espera y la eficiencia del sistema.
+    \end{itemize}
+    
+    \item \textbf{Implementar Estrategias de Optimización:}
+    \begin{itemize}
+        \item Identificar estrategias para optimizar el rendimiento del sistema basadas en los resultados de los escenarios anteriores.
+        \item Proponer e implementar mejoras, como la redistribución de torniquetes, la optimización de horarios de entrada/salida y la mejora de la tecnología utilizada.
+        \item Simular las estrategias propuestas y evaluar su efectividad en la reducción de los tiempos de espera y la mejora del flujo de personas.
+    \end{itemize}
+\end{itemize}
+
+\textbf{Entrega:}
+\begin{itemize}
+    \item \textbf{Análisis de Escenarios:} Documente los resultados de cada análisis de escenario, incluyendo:
+    \begin{itemize}
+        \item Gráficos y tablas que presenten los tiempos de espera y las mejoras logradas.
+        \item Comparaciones entre los diferentes escenarios simulados y el modelo original.
+    \end{itemize}
+    \item \textbf{Código de Simulación para Escenarios:} Código fuente de SimPy utilizado para simular los diferentes escenarios, con comentarios detallados que expliquen los cambios realizados y las observaciones derivadas.
+    \item \textbf{Recomendaciones de Optimización:} Un conjunto de recomendaciones prácticas y justificadas para optimizar el sistema de torniquetes basado en el análisis de escenarios, acompañado de simulaciones que demuestren su efectividad.
+\end{itemize}
+
+\end{document}
